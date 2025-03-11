@@ -22,4 +22,9 @@ public class Animal
         Classification = classification;
     }
      public Animal() {}
+
+    public static explicit operator Animal(NotFoundResult v)
+    {
+        throw new NotImplementedException();
+    }
 }
