@@ -16,16 +16,8 @@ public class AnimalZooController : ControllerBase
     }
 
 
-    // private readonly ILogger<AnimalZooController> _logger;
-
-    // public AnimalZooController(ILogger<AnimalZooController> logger)
-    // {
-    //     _logger = logger;
-    // }
-
-    // [HttpGet(Name = "GetAnimalById")]
-     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(int? id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Animal>> GetAnimal(int? id)
     {
         if (id == null)
         {
@@ -37,19 +29,17 @@ public class AnimalZooController : ControllerBase
         {
             return NotFound();
         }
+        return animal;
+    }
 
-        return Ok(animal);
+   [HttpPost]
+    public async Task<ActionResult<Animal>> PostNewAnimal(Animal animal)
+    {
+        _context.Animals.Add(animal);
+        await _context.SaveChangesAsync();
 
-
-
-
-
-        // return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        // {
-        //     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-        //     TemperatureC = Random.Shared.Next(-20, 55),
-        //     Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        // })
-        // .ToArray();
+        return CreatedAtAction(nameof(GetAnimal), new { id = animal.Id }, animal);
     }
 }
+
+
