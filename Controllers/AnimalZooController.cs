@@ -1,6 +1,7 @@
 using AnimalZoo.Model;
 using Microsoft.AspNetCore.Mvc;
 using AnimalZoo.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnimalZoo.Controllers;
 
@@ -39,6 +40,18 @@ public class AnimalZooController : ControllerBase
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetAnimal), new { id = animal.Id }, animal);
+    }
+
+    [HttpGet()]
+    public async Task<ActionResult<List<Animal>>> GetAllAnimals()
+    {
+       
+        var animals = await _context.Animals.ToListAsync();
+        if (animals == null)
+        {
+            return NotFound();
+        }
+        return animals;
     }
 }
 
