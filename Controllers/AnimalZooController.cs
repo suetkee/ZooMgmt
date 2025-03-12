@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AnimalZoo.Controllers;
 
 [ApiController]
-[Route("[controller]")] 
+[Route("[controller]")]
 public class AnimalZooController : ControllerBase
 {
     private readonly AnimalDbContext _context;
@@ -16,7 +16,6 @@ public class AnimalZooController : ControllerBase
         _context = context;
     }
 
-
     [HttpGet("{id}")]
     public async Task<ActionResult<Animal>> GetAnimal(int? id)
     {
@@ -24,7 +23,7 @@ public class AnimalZooController : ControllerBase
         {
             return NotFound();
         }
-        
+
         var animal = await _context.Animals.FindAsync(id);
         if (animal == null)
         {
@@ -33,7 +32,7 @@ public class AnimalZooController : ControllerBase
         return animal;
     }
 
-   [HttpPost]
+    [HttpPost]
     public async Task<ActionResult<Animal>> PostNewAnimal(Animal animal)
     {
         _context.Animals.Add(animal);
@@ -45,7 +44,6 @@ public class AnimalZooController : ControllerBase
     [HttpGet()]
     public async Task<ActionResult<List<Animal>>> GetAllAnimals()
     {
-       
         var animals = await _context.Animals.ToListAsync();
         if (animals == null)
         {
@@ -54,5 +52,3 @@ public class AnimalZooController : ControllerBase
         return animals;
     }
 }
-
-
