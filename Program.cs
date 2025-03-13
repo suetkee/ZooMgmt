@@ -1,4 +1,4 @@
-using AnimalZoo.Database; 
+using AnimalZoo.Database;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -23,5 +23,21 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Seed the database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AnimalDbContext>();
+        await DbInitializer.SeedAnimals(context); // Call and await InitializeAsync
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred seeding the DB.");
+    }
+}
 
 app.Run();
