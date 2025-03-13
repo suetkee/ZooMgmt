@@ -1,4 +1,14 @@
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using AnimalZoo.Database;
+
+var config = new LoggingConfiguration();
+var target = new FileTarget { FileName = @"C:\Users\EmiOra\Documents\projects\ZooMgmt\ZooManagement.log", Layout = @"${longdate} ${level} - ${logger}: ${message}" };
+config.AddTarget("File Logger", target);
+config.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Debug, target));
+LogManager.Configuration = config;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -31,7 +41,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<AnimalDbContext>();
-        await DbInitializer.SeedAnimals(context); // Call and await InitializeAsync
+        await DbInitializer.SeedAnimals(context); 
     }
     catch (Exception ex)
     {
