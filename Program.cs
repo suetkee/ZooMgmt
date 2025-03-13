@@ -31,7 +31,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<AnimalDbContext>();
-        await DbInitializer.SeedAnimals(context); // Call and await InitializeAsync
+        await DbInitializer.SeedAnimals(context); 
     }
     catch (Exception ex)
     {
