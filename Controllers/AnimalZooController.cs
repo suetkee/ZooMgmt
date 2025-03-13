@@ -2,7 +2,7 @@ using AnimalZoo.Model;
 using Microsoft.AspNetCore.Mvc;
 using AnimalZoo.Database;
 using Microsoft.EntityFrameworkCore;
-
+using NLog;
 
 namespace AnimalZoo.Controllers;
 
@@ -10,6 +10,7 @@ namespace AnimalZoo.Controllers;
 [Route("[controller]")]
 public class AnimalZooController : ControllerBase
 {
+    private static readonly NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
     private readonly AnimalDbContext _context;
 
     public AnimalZooController(AnimalDbContext context)
@@ -19,7 +20,8 @@ public class AnimalZooController : ControllerBase
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Animal>> GetAnimal(int? id)
-    {
+    {   
+        Logger.Debug("GetAnimal called with input: {id}", id);
         if (id == null)
         {
             return NotFound();
@@ -28,6 +30,7 @@ public class AnimalZooController : ControllerBase
         var animal = await _context.Animals.FindAsync(id);
         if (animal == null)
         {
+            Logger.Error("ID not found."); 
             return NotFound();
         }
         return animal;
