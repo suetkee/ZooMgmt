@@ -14,6 +14,8 @@ namespace AnimalZoo.Model
         public string? SearchQuery { get; set; }
 
         public int? Age { get; set; }
-        
+
+        public string orderBy  { get; set; } = "Species";
+        public bool orderDirectionAsc { get; set; } = true;
     }
 }
